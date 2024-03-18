@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools{
-        maven 'maven_3_5_0'
+        maven 'maven_3_6_3'
     }
     stages{
         stage('Build Maven'){
@@ -20,20 +20,14 @@ pipeline {
         stage('Push image to Hub'){
             steps{
                 script{
-                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u javatechie -p ${dockerhubpwd}'
+                   withCredentials([string(credentialsId: '2479349d-644e-4c4e-a489-7efbb8bd4112', variable: 'dockerhubpwd')]) {
+                   sh 'docker login -u ravinder143 -p ${dockerhubpwd}'
 
 }
-                   sh 'docker push javatechie/devops-integration'
+                   sh 'docker push ravinder143/devops-integration'
                 }
             }
         }
-        stage('Deploy to k8s'){
-            steps{
-                script{
-                    kubernetesDeploy (configs: 'deploymentservice.yaml',kubeconfigId: 'k8sconfigpwd')
-                }
-            }
-        }
+        
     }
 }
